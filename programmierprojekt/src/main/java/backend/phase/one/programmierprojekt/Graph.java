@@ -27,8 +27,8 @@ public class Graph {
 				br.readLine();
 			}
 
-			nodeNr = Integer.parseInt(br.readLine());
-			edgeNr = Integer.parseInt(br.readLine());
+			nodeNr = Integer.parseInt(br.readLine());//read the line 6
+			edgeNr = Integer.parseInt(br.readLine());//read the line 7
 			latitude = new double[nodeNr];
 			longitude = new double[nodeNr];
 			nrOfOutgoingEdges = new int [nodeNr];
@@ -36,17 +36,16 @@ public class Graph {
 			nodeArray = new int[nodeNr];
 			String line;
 			// fill nodeArray
-			for (int i = 0; i < nodeNr; i++) {
+			for (int i = 0; i < nodeNr; i++) {//read lines rang from 8 to 8+nodeNr-1
 				line = br.readLine();
 				String[] tempString = line.split(" ");
 				latitude[i] = Double.valueOf(tempString[2]);
 				longitude[i] = Double.valueOf(tempString[3]);
 				nodeArray[i] = -1;
-				nrOfOutgoingEdges [i] = -1;
 			}
 			// fill edgeArray
 			int index = 0;
-			for (int i = 0; i < edgeNr; i++) {
+			for (int i = 0; i < edgeNr; i++) {//read line range from (8+nodeNr) to (8+nodeNr+edgeNr)
 				line = br.readLine();
 				String[] tempStringArray = line.split(" ");
 				edgeArray[index] = Integer.parseInt(tempStringArray[0]);
@@ -57,7 +56,7 @@ public class Graph {
 				index++;
 			}
 			
-			for (int i = 0; i < edgeNr; i++) {// 0
+			for (int i = 0; i < edgeNr; i++) {
 				nodeArray[edgeArray[i*3]] = i*3;
 				nrOfOutgoingEdges[edgeArray[i*3]] += 1;
 			}
@@ -84,6 +83,72 @@ public class Graph {
 
 	double getLongitude(int nodeID) {
 		return longitude[nodeID];
+	}
+	/**
+	 * prints rang(0, @param) of the latitude Array 
+	 * @param numberOfElements
+	 */
+	void printLatitudeArray(int numberOfElements) {
+		if (numberOfElements <= latitude.length) {
+			for (int i = 0; i < numberOfElements; i++) {
+				System.out.println("node: "+i+" latitude: "+ latitude[i]);
+			}
+		}
+		
+	}
+	/**
+	 * prints rang(0, @param) of the longitude Array 
+	 * @param numberOfElementsToPrint
+	 */
+	void printLongitudeArray(int numberOfElementsToPrint) {
+		if (numberOfElementsToPrint <= longitude.length) {
+			for (int i = 0; i < numberOfElementsToPrint; i++) {
+				System.out.println("node: "+i+" latitude: "+ longitude[i]);
+			}
+		}
+		
+	}
+	/**
+	 * to return the number of outgoing edges for specific node
+	 * @param nodeID
+	 * @return the number of outgoing edges for the node
+	 */
+	int getNumberOfOutgoingEdge(int nodeID) {
+		return nrOfOutgoingEdges[nodeID];
+	}
+	/**
+	 * prints rang(0, @param) elements of the node Array
+	 * @param number of the elements to print
+	 */
+	void printNodeArray(int numberOfElemntToPrint) {
+		if (numberOfElemntToPrint <= nodeArray.length) {
+			for (int i = 0; i < numberOfElemntToPrint; i++) {
+				System.out.println(nodeArray[i]);
+			}
+		}
+	}
+	/**
+	 * 
+	 * @param numberOfElemntToPrint
+	 */
+	void printEdgeArray(int numberOfElemntToPrint) {
+		if (numberOfElemntToPrint <= edgeArray.length) {
+			for (int i = 0; i < numberOfElemntToPrint; i++) {
+				System.out.println(edgeArray[i]);
+			}
+		}
+	}
+	/**
+	 * 
+	 * @param numberOfElemntToPrint
+	 */
+	void printOutgoingEdges(int numberOfElemntToPrint) {
+		if (numberOfElemntToPrint <= nodeArray.length) {
+			for (int i = 0; i < numberOfElemntToPrint; i++) {
+				System.out.println("ndoe: "+i+" outgoing edges number: "+ nrOfOutgoingEdges[i]);
+			}
+		}
+		
 	}
 
 }
