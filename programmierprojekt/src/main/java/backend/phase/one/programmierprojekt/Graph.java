@@ -3,6 +3,7 @@ package backend.phase.one.programmierprojekt;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * read static Graph Date from File represent it as Arrays
@@ -57,7 +58,9 @@ public class Graph {
 			}
 			
 			for (int i = 0; i < edgeNr; i++) {
-				nodeArray[edgeArray[i*3]] = i*3;
+				if (nodeArray[edgeArray[i*3]] == -1) {
+					nodeArray[edgeArray[i*3]] = i*3;
+				}
 				nrOfOutgoingEdges[edgeArray[i*3]] += 1;
 			}
 		} catch (IOException e) {
@@ -84,8 +87,17 @@ public class Graph {
 	double getLongitude(int nodeID) {
 		return longitude[nodeID];
 	}
+	
+	int[] getOutgingEdgesArray(int nodeID) {
+		int startIndex = nodeArray[nodeID];
+		int endIndex = nodeArray[nodeID+1];
+		while (endIndex == -1) {
+			endIndex = nodeArray[nodeID++];
+		}
+		return Arrays.copyOfRange(nodeArray, startIndex, endIndex);
+	}
 	/**
-	 * prints rang(0, @param) of the latitude Array 
+	 * prints rang(0, @param) of the latitude Array
 	 * @param numberOfElements
 	 */
 	void printLatitudeArray(int numberOfElements) {
