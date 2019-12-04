@@ -19,7 +19,12 @@ public class Graph {
 	private int[] nodeArray;
 
 	Graph(String path) {
+		System.out.println("Datei wird gelesen...");
+		long startTime = System.currentTimeMillis();
 		readGraphFile(path);
+		long endTime = System.currentTimeMillis();
+		long totalTime = endTime - startTime;
+		System.out.println("Einlesen des Graphs Datei hat "+totalTime/1000+" Sekunden gedauert");
 	}
 
 	private void readGraphFile(String path) {
@@ -104,12 +109,7 @@ public class Graph {
 	int[] getOutgingEdgesArray(int nodeID) {
 		if (nrOfOutgoingEdges[nodeID] >= 1) {
 			int startIndex = nodeArray[nodeID];
-			int i = 1;
-			int endIndex = nodeArray[nodeID + i];
-			while (endIndex == -1) {
-				endIndex = nodeArray[nodeID + i];// TODO exception bei letzte Antrag
-				i++;
-			}
+			int endIndex = getNrOfOutgoingEdges(nodeID)*3 + startIndex;
 			return Arrays.copyOfRange(edgeArray, startIndex, endIndex);
 		}
 		return null;

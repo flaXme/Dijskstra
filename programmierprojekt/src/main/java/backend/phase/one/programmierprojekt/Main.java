@@ -5,19 +5,16 @@ import java.util.Arrays;
 public class Main {
 
 	public static void main(String[] args) {
+		Graph g = new Graph("/home/ad/Downloads/graph-files/MV.fmi");
 		
-		long startTime = System.currentTimeMillis();
-		Graph g = new Graph("/home/ad/Downloads/graph-files/toy.fmi");
-		long endTime = System.currentTimeMillis();
-		long totalTime = endTime-startTime;
-		System.out.println("Time: "+ totalTime/1000 +" s");
+		//g.printEdgeArray(g.getEdgeNr()*3);
+		//g.printNodeArray(g.getNodeNr());
+		//System.out.println(Arrays.toString(g.getEdgeArray()));
+		//System.out.println(Arrays.toString(g.getNodeArray()));
+		Dijkstra_0 d = new Dijkstra_0(g, 0);
 		
-//		g.printEdgeArray(g.getEdgeNr()*3);
-//		g.printNodeArray(g.getNodeNr());
-		System.out.println(Arrays.toString(g.getEdgeArray()));
-		System.out.println(Arrays.toString(g.getNodeArray()));
-		
-		System.out.println(Arrays.toString(g.getOutgingEdgesArray(4)));
+		System.out.println(Arrays.toString(Arrays.copyOfRange(d.getCostFromStartNodeToAllOtherNodes(), 0, 11)));
+		//System.out.println(Arrays.toString(g.getOutgingEdgesArray(1)));
 	}
 
 }
