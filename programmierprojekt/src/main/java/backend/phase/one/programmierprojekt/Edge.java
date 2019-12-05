@@ -27,8 +27,10 @@ public class Edge implements Comparable<Edge>{
 	public int compareTo(Edge edge) {
 		if (this.cost < edge.getCost()) {
 			return -1;
-		}else {
+		}else if (this.getCost() == edge.getCost()) {
 			return 0;
+		}else {
+			return 1;
 		}
 	}
 }
