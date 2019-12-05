@@ -45,7 +45,7 @@ public class Dijkstra_0 {
 		
 		while (!priorityQ.isEmpty()) {
 			Edge tempEdge = priorityQ.remove(); // Extract minimal edge also edge with the minimal cost
-			System.out.println("removed: <"+tempEdge.getSrc()+","+ tempEdge.getTarg()+","+ tempEdge.getCost()+">");
+			//System.out.println("removed: <"+tempEdge.getSrc()+","+ tempEdge.getTarg()+","+ tempEdge.getCost()+">");
 			if (tempEdge.getCost() + costToOther[tempEdge.getSrc()] < costToOther[tempEdge.getTarg()]) {
 				costToOther[tempEdge.getTarg()] = tempEdge.getCost() + costToOther[tempEdge.getSrc()];
 			}
@@ -69,7 +69,7 @@ public class Dijkstra_0 {
 		for (int i = 0; i < graph.getNrOfOutgoingEdges(nodeID); i++) {
 			Edge edge = new Edge(out[index], out[index + 1], out[index + 2]);
 			priorityQ.add(edge);
-			System.out.println("added: <"+edge.getSrc()+" ,"+edge.getTarg()+" ,"+edge.getCost()+">");
+			//System.out.println("added: <"+edge.getSrc()+" ,"+edge.getTarg()+" ,"+edge.getCost()+">");
 			index += 3;
 		}
 	}
