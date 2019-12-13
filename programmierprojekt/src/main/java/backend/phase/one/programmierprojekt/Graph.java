@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * read static Graph Date from File represent it as Arrays
- *
+ * read static Graph date from File represent it as Arrays
+ * @author Ahmed Ebrahim Aldekal
  */
 public class Graph {
 	private int nodeNr;
@@ -26,7 +26,7 @@ public class Graph {
 		long totalTime = endTime - startTime;
 		System.out.println("Einlesen des Graphs Datei hat "+totalTime/1000+" Sekunden gedauert");
 	}
-
+	
 	private void readGraphFile(String path) {
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 			for (int i = 0; i < 5; i++) {// skip the first five lines

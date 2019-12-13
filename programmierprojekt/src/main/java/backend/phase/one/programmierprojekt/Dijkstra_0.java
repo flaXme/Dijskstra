@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
 public class Dijkstra_0 {
 	Graph graph;
 	int startNodeID;
-	static int[] costFromStartNodeToAllOtherNodes;
+	static int[] shortestPath;
 	PriorityQueue<Edge> priorityQ;
 	boolean[] addedToQueue;
 
@@ -20,7 +20,7 @@ public class Dijkstra_0 {
 		this.startNodeID = startNodeID;
 		System.out.println("Dijkstra one-to-all wird berechnet...");
 		long startTime = System.currentTimeMillis();
-		costFromStartNodeToAllOtherNodes = dijkstraOneToAll(graph, startNodeID);
+		shortestPath = dijkstraOneToAll(graph, startNodeID);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("Dijkstra one-to-all berchnung hat "+totalTime/1000+" Sekunden gedauert");
@@ -44,7 +44,7 @@ public class Dijkstra_0 {
 		addedToQueue[startNodeID] = true;
 		
 		while (!priorityQ.isEmpty()) {
-			Edge tempEdge = priorityQ.remove(); // Extract minimal edge also edge with the minimal cost
+			Edge tempEdge = priorityQ.poll(); // Extract minimal edge also edge with the minimal cost
 			//System.out.println("removed: <"+tempEdge.getSrc()+","+ tempEdge.getTarg()+","+ tempEdge.getCost()+">");
 			if (tempEdge.getCost() + costToOther[tempEdge.getSrc()] < costToOther[tempEdge.getTarg()]) {
 				costToOther[tempEdge.getTarg()] = tempEdge.getCost() + costToOther[tempEdge.getSrc()];
@@ -60,7 +60,7 @@ public class Dijkstra_0 {
 	}
 
 	int[] getCostFromStartNodeToAllOtherNodes() {
-		return costFromStartNodeToAllOtherNodes;
+		return shortestPath;
 	}
 
 	private void addOutgoingEdgeFromMinamalToPQ(int nodeID) {

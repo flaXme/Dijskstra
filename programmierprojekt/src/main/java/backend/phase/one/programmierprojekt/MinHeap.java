@@ -1,129 +1,153 @@
 package backend.phase.one.programmierprojekt;
 
+import java.util.Arrays;
+
+/*
+ * Min Heap with based on the even Index, the odd Index contains the nodeIDs
+ */
 public class MinHeap {
-	private int[] heap; //NodeIds
-	private int[] costs;
-	private int[] heapIds; //Indizes von Knoten im Heap
-	private boolean[] inHeap; //beschreibt ob Knoten im Heap vorhanden ist
-	private int size; //aktuelle Heapgroesse
-	
+	static int[] heap;
+	private int[] refNodeIndex;// if node in heap and should update cost
+	private static boolean[] inHeap;
+	private int size;
+	private int maxsize;
+
 	public MinHeap(int capacity) {
-		heap = new int[capacity];
-		costs = new int[capacity];
-		heapIds = new int[capacity];
+		heap = new int[capacity * 2 + 1];
 		inHeap = new boolean[capacity];
-		size = 0;
-	}
-	
-	public boolean getInHeap(int nodeId) {
-		return inHeap[nodeId];
-	}
-	public int getCost(int nodeId) {
-		return costs[nodeId];
-	}
-	public void setCost(int nodeId, int cost) {
-		costs[nodeId] = cost;
-	}
-	public int getSize() {
-		return size;
-	}
-	public int getHeapId(int nodeId) {
-		return heapIds[nodeId];
-	}
-	
-	private int getLeftHeapIndex(int heapIndex) {
-		return 2 * heapIndex + 1;
-	}
-	private int getRightHeapIndex(int heapIndex) {
-		return 2 * heapIndex + 2;
-	}
-	private int getParentHeapIndex(int heapIndex) {
-		return (heapIndex -1) / 2;
-	}
-	
-	private int getLeft(int heapIndex) {
-		return heap[getLeftHeapIndex(heapIndex)];
-	}
-	private int getRight(int heapIndex) {
-		return heap[getRightHeapIndex(heapIndex)];
-	}
-	private int getParent(int heapIndex) {
-		return heap[getParentHeapIndex(heapIndex)];
-	}
-	
-	private boolean hasLeft(int heapIndex) {
-		return getLeftHeapIndex(heapIndex) < size;
-	}
-	private boolean hasRight(int heapIndex) {
-		return getRightHeapIndex(heapIndex) < size;
-	}
-	
-	private void swap(int firstHeapIndex, int secondHeapIndex) {
-		//heapIds vertauschen
-		heapIds[heap[firstHeapIndex]] = secondHeapIndex;
-		heapIds[heap[secondHeapIndex]] = firstHeapIndex;
-		//Knoten vertauschen
-		int temp = heap[firstHeapIndex];
-		heap[firstHeapIndex] = heap[secondHeapIndex];
-		heap[secondHeapIndex] = temp;
-	}
-	
-	//Knoten hinzufuegen
-	public void add(int nodeId) {
-		size++;
-		heap[size - 1] = nodeId;
-		heapIds[nodeId] = size -1;
-		inHeap[nodeId] = true;
-		heapifyUp(size - 1);
-	}
-	
-	//Knoten mit minimalen Kosten rausziehen
-	public int extractMin() {
-		int node = heap[0];
-		swap(0, size - 1);
-		heapIds[node] = -1; //beschreibt besucht
-		size--;
-		inHeap[node] = false;
-		heapifyDown();
-		return node;
-	}
-	
-	//Kosten eines Knoten aktualisieren und Heap-Eigenschaft wiederherstellen
-	public void decreaseKey(int nodeId, int cost) {
-		costs[nodeId] = cost;
-		heapifyUp(heapIds[nodeId]);
-	}
-	
-	//Heap-Eigenschaft nach oben wiederherstellen
-	private void heapifyUp(int heapIndex) {
-		while(heapIndex != 0 && costs[getParent(heapIndex)] > costs[heap[heapIndex]]) {
-			int parentIndex = getParentHeapIndex(heapIndex);
-			swap(parentIndex, heapIndex);
-			heapIndex = parentIndex;
-		}
-	}
-	
-	//Heap-Eigenschaft nach unten wiederherstellen
-	private void heapifyDown() {
-		int heapIndex = 0;
-		while(hasLeft(heapIndex)) {
-			int minChildIndex = getLeftHeapIndex(heapIndex);
-			if(hasRight(heapIndex) && costs[getRight(heapIndex)] < costs[getLeft(heapIndex)]) {
-				minChildIndex = getRightHeapIndex(heapIndex);
-			}
-			if(costs[heap[heapIndex]] < costs[heap[minChildIndex]]) {
-				break;
-			} else {
-				swap(heapIndex, minChildIndex);
-			}
-			heapIndex = minChildIndex;
-		}
+		this.refNodeIndex = new int[capacity];
+		this.size = 1;
+		this.maxsize = capacity * 2;
+		heap[0] = Integer.MIN_VALUE;
 	}
 
-	public void printHeap() {
-		for(int i = 0; i < size; i++) {
-			System.out.print(costs[i] + "(" + heap[i] + ") , ");
+	void insert(int knoten, int cost) {
+		if (size <= maxsize && !inHeap[knoten]) {
+			inHeap[knoten] = true;
+			heap[size] = knoten;
+			refNodeIndex[knoten] = size;
+			heap[size + 1] = cost;
+			int current = size + 1;
+			while (heap[current] < heap[parent(current)]) {
+				swap(current, parent(current));
+				current = parent(current);
+			}
+			size += 2;
 		}
+
 	}
 
+	private void swap(int fpos, int spos) {
+		int tmp;
+		int tmp2;
+		refNodeIndex[heap[fpos - 1]] = spos - 1;
+		refNodeIndex[heap[spos - 1]] = fpos - 1;
+		tmp = heap[fpos];
+		tmp2 = heap[fpos - 1];
+		heap[fpos] = heap[spos];
+		heap[fpos - 1] = heap[spos - 1];
+		heap[spos] = tmp;
+		heap[spos - 1] = tmp2;
+	}
+
+	int[] extractMin() {
+		int[] min = { heap[1], heap[2] };
+		inHeap[heap[1]] = false;
+		if (size > 1) {
+			heap[1] = heap[size - 2];
+			heap[2] = heap[size - 1];
+			heap[size - 2] = 0;
+			heap[size - 1] = 0;
+			size -= 2;
+			heapify(2);
+		}
+
+		return min;
+	}
+
+	void heapify(int pos) {
+		if (!isLeaf(pos)) {
+			if (heap[pos] > heap[leftChild(pos)] || heap[pos] > heap[rightChild(pos)]) {
+				if (heap[leftChild(pos)] < heap[rightChild(pos)]) {
+					swap(pos, leftChild(pos));
+					heapify(leftChild(pos));
+				} else {
+					swap(pos, rightChild(pos));
+					heapify(rightChild(pos));
+				}
+			}
+		}
+
+	}
+
+	private boolean isLeaf(int pos) {
+		if (pos >= (size / 2) && pos <= size) {
+			return true;
+		}
+		return false;
+	}
+
+	private int parent(int pos) {
+		if (pos == 2) {
+			return 2;
+		}
+		return (pos / 4) * 2;
+	}
+
+	private int leftChild(int pos) {
+		return (2 * pos);
+	}
+
+	private int rightChild(int pos) {
+		return (2 * pos) + 2;
+	}
+
+	int getsize() {
+		return this.size;
+	}
+
+	boolean inheap(int pos) {
+		return inHeap[pos];
+	}
+
+	int getFromHeap(int pos) {
+		return heap[pos];
+	}
+
+	int getRefNodeIndex(int index) {
+		return refNodeIndex[index];
+	}
+
+	void costUpdate(int pos, int newCost) {
+		heap[pos+1] = newCost;
+		int current = pos+1;
+		while (heap[current] < heap[parent(current)]) {
+			swap(current, parent(current));
+			current = parent(current);
+		}
+
+	}
+
+	/*public static void main(String[] args) {
+		MinHeap h = new MinHeap(10);
+
+		System.out.println(Arrays.toString(heap) + "  size: " + h.getsize());
+		h.insert(0, 0);
+		System.out.println("<0,0> "+ Arrays.toString(heap) + "  size: " + h.getsize()+" is in Heap 0: "+inHeap[0]+ " ref: "+h.getRefNodeIndex(0));
+		System.out.println("min: "+Arrays.toString(h.extractMin())+" was deleted");
+		h.insert(1, 9);
+		System.out.println("<1,9> "+ Arrays.toString(heap) + "  size: " + h.getsize()+" is in Heap 1: "+inHeap[1]+ " ref: "+h.getRefNodeIndex(1));
+		h.insert(2, 8);
+		System.out.println("<2,8> "+ Arrays.toString(heap) + "  size: " + h.getsize()+" is in Heap 2: "+inHeap[2]+ " ref: "+h.getRefNodeIndex(2));
+		h.insert(4, 7);
+		System.out.println("<4,7> "+ Arrays.toString(heap) + "  size: " + h.getsize()+" is in Heap 4: "+inHeap[4]+ " ref: "+h.getRefNodeIndex(4));
+		System.out.println("min: "+Arrays.toString(h.extractMin())+" was deleted "+Arrays.toString(heap)+" size: "+h.getsize());
+		System.out.println("jetzt muss man <3,1> einfuegen "+inHeap[3]+" die <1,2> update "+inHeap[1]);
+		h.insert(3, 8);
+		System.out.println("<3,1> "+ Arrays.toString(heap) + "  size: " + h.getsize()+" is in Heap 4: "+inHeap[3]+ " ref: "+h.getRefNodeIndex(3));
+		h.insert(1, 7);
+		System.out.println("<1,7> "+ Arrays.toString(heap) + "  size: " + h.getsize()+" is in Heap 1: "+inHeap[1]+ " ref: "+h.getRefNodeIndex(1));
+		h.costUpdate(3, 5);
+		System.out.println(Arrays.toString(heap));
+	}*/
 }
