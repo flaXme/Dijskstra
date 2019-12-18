@@ -1,4 +1,4 @@
-package backend.phase.one.programmierprojekt;
+package backend.phase.one;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 /**
  * read static Graph date from File represent it as Arrays
+ * 
  * @author Ahmed Ebrahim Aldekal
  */
 public class Graph {
@@ -19,16 +20,17 @@ public class Graph {
 	private int[] nodeArray;
 
 	Graph(String path) {
-		System.out.println("Datei wird gelesen...");
+		System.out.println("reading file...");
 		long startTime = System.currentTimeMillis();
 		readGraphFile(path);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
-		System.out.println("Einlesen des Graphs Datei hat "+totalTime/1000+" Sekunden gedauert");
+		System.out.println("reading file took: " + totalTime / 1000 + "s");
 	}
-	
+
 	private void readGraphFile(String path) {
-		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path));
 			for (int i = 0; i < 5; i++) {// skip the first five lines
 				br.readLine();
 			}
@@ -61,6 +63,8 @@ public class Graph {
 				edgeArray[index] = Integer.parseInt(tempStringArray[2]);
 				index++;
 			}
+			
+			br.close();
 
 			for (int i = 0; i < edgeNr; i++) {
 				if (nodeArray[edgeArray[i * 3]] == -1) {
@@ -109,38 +113,10 @@ public class Graph {
 	int[] getOutgingEdgesArray(int nodeID) {
 		if (nrOfOutgoingEdges[nodeID] >= 1) {
 			int startIndex = nodeArray[nodeID];
-			int endIndex = getNrOfOutgoingEdges(nodeID)*3 + startIndex;
+			int endIndex = getNrOfOutgoingEdges(nodeID) * 3 + startIndex;
 			return Arrays.copyOfRange(edgeArray, startIndex, endIndex);
 		}
 		return null;
-	}
-
-	/**
-	 * prints rang(0, @param) of the latitude Array
-	 * 
-	 * @param numberOfElements
-	 */
-	void printLatitudeArray(int numberOfElements) {
-		if (numberOfElements <= latitude.length) {
-			for (int i = 0; i < numberOfElements; i++) {
-				System.out.println("node: " + i + " latitude: " + latitude[i]);
-			}
-		}
-
-	}
-
-	/**
-	 * prints rang(0, @param) of the longitude Array
-	 * 
-	 * @param numberOfElementsToPrint
-	 */
-	void printLongitudeArray(int numberOfElementsToPrint) {
-		if (numberOfElementsToPrint <= longitude.length) {
-			for (int i = 0; i < numberOfElementsToPrint; i++) {
-				System.out.println("node: " + i + " latitude: " + longitude[i]);
-			}
-		}
-
 	}
 
 	/**
@@ -151,44 +127,6 @@ public class Graph {
 	 */
 	int getNumberOfOutgoingEdge(int nodeID) {
 		return nrOfOutgoingEdges[nodeID];
-	}
-
-	/**
-	 * prints rang(0, @param) elements of the node Array
-	 * 
-	 * @param number of the elements to print
-	 */
-	void printNodeArray(int numberOfElemntToPrint) {
-		if (numberOfElemntToPrint <= nodeArray.length) {
-			for (int i = 0; i < numberOfElemntToPrint; i++) {
-				System.out.println(nodeArray[i]);
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param numberOfElemntToPrint
-	 */
-	void printEdgeArray(int numberOfElemntToPrint) {
-		if (numberOfElemntToPrint <= edgeArray.length) {
-			for (int i = 0; i < numberOfElemntToPrint; i++) {
-				System.out.println(edgeArray[i]);
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param numberOfElemntToPrint
-	 */
-	void printOutgoingEdges(int numberOfElemntToPrint) {
-		if (numberOfElemntToPrint <= nodeArray.length) {
-			for (int i = 0; i < numberOfElemntToPrint; i++) {
-				System.out.println("ndoe: " + i + " outgoing edges number: " + nrOfOutgoingEdges[i]);
-			}
-		}
-
 	}
 
 }

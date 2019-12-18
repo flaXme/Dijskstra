@@ -1,63 +1,58 @@
-package backend.phase.one.programmierprojekt;
+package backend.phase.one;
 
-import java.util.Arrays;
 
 public class Dijkstra {
-	private int[] shortestpath;
-	private MinHeap heap;
-	private Graph graph;
-	private int startNodeID;
-
-	Dijkstra(Graph graph, int startNodeID) {
-		this.graph = graph;
-		this.startNodeID = startNodeID;
-		this.shortestpath = new int[graph.getNodeNr()];
-		this.startNodeID = startNodeID;
-		this.heap = new MinHeap(graph.getNodeNr());
-		dijkstraOneToAll(graph, startNodeID);
-	}
-
-	private void dijkstraOneToAll(Graph graph, int startNodeID) {
-		for (int i = 0; i < shortestpath.length; i++) {
-			shortestpath[i] = Integer.MAX_VALUE;
+	private int[] dis;
+	private int[] parent;
+	
+	
+	Dijkstra(Graph graph, int start){
+		System.out.println("computing dijkstra...");
+		long sTime = System.currentTimeMillis();
+		this.dis = new int[graph.getNodeNr()];
+		this.parent = new int[graph.getNodeNr()];
+		
+		for (int i = 0; i < parent.length; i++) {
+			dis[i] = Integer.MAX_VALUE;
+			parent[i] = -1; // no parent
 		}
-		// shortestpath[startNodeID] = 0;
-		heap.insert(startNodeID, 0);
-
-		while (heap.getsize() > 1) {
-			int[] minArr = heap.extractMin();
-			shortestpath[minArr[0]] = minArr[1];
-			int[] minOut = graph.getOutgingEdgesArray(minArr[0]);
-
-			if (minOut != null) {
-
-				for (int i = 1; i <= minOut.length; i += 3) {
-					if (!heap.inheap(minOut[i])) {// falls knoten noch nicht im heap
-						if (shortestpath[minOut[i]] < shortestpath[minOut[i - 1]] + minOut[i + 1]) {
-							;
-						}
-						else {
-							heap.insert(minOut[i], shortestpath[minOut[i - 1]] + minOut[i + 1]);
-						}
-						//System.out.println(Arrays.toString(heap.heap));
-					} else {// falls die knoten in heap und die neue path guenster ist dann update
-						if (shortestpath[minOut[i - 1]] + minOut[i + 1] < heap
-								.getFromHeap(heap.getRefNodeIndex(i) + 1)) {
-							heap.costUpdate(heap.getRefNodeIndex(i), shortestpath[i - 1] + minOut[i + 1]);
+		
+		parent[start] = start;
+		dis[start] = 0;
+		
+		Heap heap = new Heap(graph.getNodeNr());
+		
+		heap.add(start, 0);
+		
+		while(heap.getSize() > 0) {
+			int[] min = heap.remove();
+			int[] out = graph.getOutgingEdgesArray(min[0]);
+			
+			if(out != null) {
+				for (int i = 0; i < out.length; i += 3) {
+					if (dis[out[i]] + out[i+2] < dis[out[i+1]]) {
+						dis[out[i+1]] = dis[out[i]] + out[i+2];
+						parent[out[i+1]] = out[i];
+						if (heap.posInHeap[out[i]] != 0) {// in heap
+							heap.decreaseKey(out[i+1], dis[out[i]] + out[i+2]);
+						}else {
+							heap.add(out[i+1], dis[out[i]] + out[i+2]);
 						}
 					}
 				}
+				
+				
 			}
-
+			
 		}
-
+		long eTime = System.currentTimeMillis();
+		long time = eTime - sTime;
+		System.out.println("Dijkstra Computation took "+time/1000+"s");
+		
 	}
-
-	public static void main(String[] args) {
-		Graph g = new Graph("/home/ad/Downloads/graph-files/MV.fmi");
-		Dijkstra d = new Dijkstra(g, 0);
-		//System.out.println(Arrays.toString(d.shortestpath));
-		// System.out.println(d.heap.getsize());
+	
+	int getShortestPathTo(int nodeID) {
+		return this.dis[nodeID];
 	}
 
 }
