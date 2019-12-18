@@ -6,5 +6,8 @@ Zusammenarbeit von:
 - Xing
 - Jonathan
 
-# Instalatsion
-
+## Instalstion
+führe der Befehl
+´´´
+mvn clean package
+´´´
