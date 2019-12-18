@@ -8,6 +8,6 @@ Zusammenarbeit von:
 
 ## Instalstion
 führe der Befehl
-´´´
+```
 mvn clean package
-´´´
+```
