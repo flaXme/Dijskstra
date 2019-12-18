@@ -13,7 +13,7 @@ public class Main {
 
 		while (true) {
 			System.out.println("chose function:");
-			System.out.println("+---------------------------------+");
+			System.out.println("-----------------------------------");
 			System.out.println("| 1: Dijkstra with source-target  |");
 			System.out.println("|---------------------------------|");
 			System.out.println("| 2: Dijkstra with start          |");
@@ -21,7 +21,7 @@ public class Main {
 			System.out.println("| 3: File                         |");
 			System.out.println("|---------------------------------|");
 			System.out.println("| 4: End                          |");
-			System.out.println("+---------------------------------+");
+			System.out.println("-----------------------------------");
 			String function = scanner.nextLine();
 
 			if (function.equals("1") || function.equals("2") || function.equals("3")) {
@@ -37,7 +37,10 @@ public class Main {
 				} 
 				else if (function.equals("2")) 
 				{
-
+					System.out.println("start:	");
+					int start = scanner.nextInt();
+					Dijkstra dijk = new Dijkstra (graph, start);
+					
 				} 
 				else 
 				{
