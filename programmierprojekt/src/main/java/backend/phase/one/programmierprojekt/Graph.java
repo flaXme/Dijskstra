@@ -1,4 +1,4 @@
-package backend.phase.one;
+package backend.phase.one.programmierprojekt;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
