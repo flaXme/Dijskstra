@@ -20,11 +20,13 @@ public class Graph {
 	private int[] nodeArray;
 
 	Graph(String path) {
-		System.out.println("reading file...");
+		System.out.println();
+		System.out.print("reading file ");
 		long startTime = System.currentTimeMillis();
 		readGraphFile(path);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
+		System.out.println();
 		System.out.println("reading file took: " + totalTime / 1000 + "s");
 	}
 
@@ -45,6 +47,9 @@ public class Graph {
 			String line;
 			// fill nodeArray
 			for (int i = 0; i < nodeNr; i++) {// read lines rang from 8 to 8+nodeNr-1
+				if (i % 1000000 == 0){
+					System.out.print("#");
+				}
 				line = br.readLine();
 				String[] tempString = line.split(" ");
 				latitude[i] = Double.valueOf(tempString[2]);
@@ -54,6 +59,9 @@ public class Graph {
 			// fill edgeArray
 			int index = 0;
 			for (int i = 0; i < edgeNr; i++) {// read line range from (8+nodeNr) to (8+nodeNr+edgeNr)
+				if (i % 1000000 == 0){
+					System.out.print("#");
+				}
 				line = br.readLine();
 				String[] tempStringArray = line.split(" ");
 				edgeArray[index] = Integer.parseInt(tempStringArray[0]);
