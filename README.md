@@ -3,8 +3,8 @@
 Zusammenarbeit von:
 
 - Ahmed Ebrahim Aldekal E-Mail: st159613@stud.uni-stuttgart.de
-- Xing
-- Jonathan
+- Xin Pang E-Mail: st145113@stud.uni-stuttgart.de
+- Jonathan Duncan Email: st157437@stud.uni-stuttgart.de
 
 ## Instalstion
 Führe der Befehl
