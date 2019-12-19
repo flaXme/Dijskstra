@@ -3,7 +3,7 @@
 Zusammenarbeit von:
 
 - Ahmed Ebrahim Aldekal E-Mail: st159613@stud.uni-stuttgart.de
-- Xing
+- Xin Pang E-Mail: st145113@stud.uni-stuttgart.de
 - Jonathan
 
 ## Instalstion
