@@ -9,24 +9,25 @@ public class Heap {
 
 	Heap(int capacity) {
 		this.size = 0;
-		this.cost = new int[capacity + 1];
-		this.nodeID = new int[capacity + 1];
+		this.cost = new int[capacity];
+		this.nodeID = new int[capacity];
 		this.posInHeap = new int[capacity];
-
-		cost[0] = Integer.MIN_VALUE;
-		nodeID[0] = Integer.MIN_VALUE;
 		
-		for (int i = 1; i < cost.length; i++) {
+		for (int i = 0; i < cost.length; i++) {
 			cost[i] = Integer.MAX_VALUE;
+		}
+		
+		for (int i = 0; i < posInHeap.length; i++) {
+			posInHeap[i] = -1;
 		}
 	}
 
 	void add(int nodeID, int cost) {
-		size++;
 		this.nodeID[size] = nodeID;
 		this.cost[size] = cost;
 		this.posInHeap[nodeID] = size;
 		heapifyUp(size);
+		size++;
 	}
 
 	private void heapifyUp(int from) {
@@ -54,10 +55,10 @@ public class Heap {
 	}
 
 	private int parent(int pos) {
-		if (pos == 1) {
-			return 1;
+		if (pos == 0) {
+			return 0;
 		}
-		return pos / 2;
+		return (pos - 1) / 2;
 	}
 
 	private boolean isLeaf(int pos) {
@@ -68,11 +69,11 @@ public class Heap {
 	}
 
 	private int rightChild(int pos) {
-		return (2 * pos) + 1;
+		return (2 * pos) + 2;
 	}
 
 	private int leftChild(int pos) {
-		return (2 * pos);
+		return (2 * pos) + 1;
 	}
 
 	private void heapifyDown(int pos) {
@@ -92,27 +93,27 @@ public class Heap {
 	
 	public void decreaseKey(int nodeId, int ncost) {
 		int pos = posInHeap[nodeId];
-		if (pos != 0) {
+		if (pos != -1) {
 			cost[pos] = ncost;
 			heapifyUp(pos);
 		}
 	}
 
 	int[] remove() {
-		int[] arr = { nodeID[1], cost[1] };
-		this.posInHeap[nodeID[1]] = 0;// knoten vom heap entfernt
-		if (this.size == 1) {
-			this.posInHeap[nodeID[size]] = 0;
-		}else {
-			this.posInHeap[nodeID[size]] = 1;
-		}
+		int[] arr = { nodeID[0], cost[0] };
+		this.posInHeap[nodeID[0]] = -1;// knoten vom heap entfernt
+//		if (this.size == 1) {
+//			this.posInHeap[nodeID[size]] = -1;
+//		}else {
+//			this.posInHeap[nodeID[size]] = 1;
+//		}
 		
-		nodeID[1] = nodeID[size];
-		cost[1] = cost[size];
+		nodeID[0] = nodeID[size];
+		cost[0] = cost[size];
 		this.nodeID[size] = 0;
 		this.cost[size] = Integer.MAX_VALUE;
 		size--;
-		heapifyDown(1);
+		heapifyDown(0);
 		return arr;
 	}
 

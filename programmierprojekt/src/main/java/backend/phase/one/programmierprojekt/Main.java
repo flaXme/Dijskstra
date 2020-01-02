@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.FileWriter;
 
 public class Main {
 	static Graph graph;
@@ -62,12 +64,16 @@ public class Main {
 					System.out.println("Enter file path: ");
 					String path2 = scanner.next();
 					BufferedReader br = null;
+					FileWriter fileWriter = null;
+					PrintWriter printWriter = null;
 					String line = null;
 					String[] split;
 					int acutalStart = -1;
 					Dijkstra dijk = null;
 					try {
 						br = new BufferedReader(new FileReader(path2));
+						fileWriter = new FileWriter("result.txt");
+						printWriter = new PrintWriter(fileWriter);
 						while((line = br.readLine()) != null) {
 							split = line.split(" ");
 							int start = Integer.parseInt(split[0]);
@@ -75,13 +81,14 @@ public class Main {
 							if (acutalStart != start) {
 								dijk = new Dijkstra (graph, start);
 							}
-							System.out.println("shortest path between "+ start +" and "+ target + ": "+ dijk.getShortestPathTo(target));
+							printWriter.println(dijk.getShortestPathTo(target));
+							System.out.println(dijk.getShortestPathTo(target));
 							acutalStart = start;
 						}
+						printWriter.close();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
