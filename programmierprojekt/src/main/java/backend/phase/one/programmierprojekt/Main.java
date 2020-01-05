@@ -3,7 +3,9 @@ package backend.phase.one.programmierprojekt;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Main {
@@ -11,7 +13,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter path: ");
+		System.out.println("Enter path to File: ");
 		String path = scanner.nextLine();
 		graph = new Graph(path);
 
@@ -62,12 +64,16 @@ public class Main {
 					System.out.println("Enter file path: ");
 					String path2 = scanner.next();
 					BufferedReader br = null;
+					FileWriter fileWriter = null;
+					PrintWriter printWriter = null;
 					String line = null;
 					String[] split;
 					int acutalStart = -1;
 					Dijkstra dijk = null;
 					try {
 						br = new BufferedReader(new FileReader(path2));
+						fileWriter = new FileWriter("result.txt");
+						printWriter = new PrintWriter(fileWriter);
 						while((line = br.readLine()) != null) {
 							split = line.split(" ");
 							int start = Integer.parseInt(split[0]);
@@ -75,13 +81,14 @@ public class Main {
 							if (acutalStart != start) {
 								dijk = new Dijkstra (graph, start);
 							}
-							System.out.println("shortest path between "+ start +" and "+ target + ": "+ dijk.getShortestPathTo(target));
+							printWriter.println(dijk.getShortestPathTo(target));
+							System.out.println(dijk.getShortestPathTo(target));
 							acutalStart = start;
 						}
+						printWriter.close();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

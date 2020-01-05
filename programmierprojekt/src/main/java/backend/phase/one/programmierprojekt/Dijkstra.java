@@ -20,7 +20,7 @@ public class Dijkstra {
 		parent[start] = start;
 		dis[start] = 0;
 		
-		Heap heap = new Heap(graph.getNodeNr());
+		MinHeap heap = new MinHeap(graph.getNodeNr());
 		
 		heap.add(start, 0);
 		
@@ -33,7 +33,7 @@ public class Dijkstra {
 					if (dis[out[i]] + out[i+2] < dis[out[i+1]]) {
 						dis[out[i+1]] = dis[out[i]] + out[i+2];
 						parent[out[i+1]] = out[i];
-						if (heap.posInHeap[out[i]] != 0) {// in heap
+						if (heap.posInHeap[out[i+1]] != -1) {// in heap
 							heap.decreaseKey(out[i+1], dis[out[i]] + out[i+2]);
 						}else {
 							heap.add(out[i+1], dis[out[i]] + out[i+2]);
