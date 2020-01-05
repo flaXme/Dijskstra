@@ -7,7 +7,7 @@ Zusammenarbeit von:
 - Jonathan Duncan Email: st157437@stud.uni-stuttgart.de
 
 ## Instalstion
-Führe der Befehl
+Führe der Folgende Befehl in dem Verzeichnes wo die pom.xml Datei ist
 ```
 mvn clean package
 ```
