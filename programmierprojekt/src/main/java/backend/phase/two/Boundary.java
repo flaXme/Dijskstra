@@ -1,12 +1,12 @@
 package backend.phase.two;
 
 public class Boundary {
-	private int xMin;
-	private int yMin;
-	private int xMax;
-	private int yMax;
+	private double xMin;
+	private double yMin;
+	private double xMax;
+	private double yMax;
 
-	public Boundary(int xMin, int yMin, int xMax, int yMax) {
+	public Boundary(double xMin, double yMin, double xMax, double yMax) {
 		super();
 		this.xMin = xMin;
 		this.yMin = yMin;
@@ -16,40 +16,40 @@ public class Boundary {
 	
 	/**
 	 * Test if given point (x,y) in Range of the Boundary
-	 * @param x
-	 * @param y
+	 * @param latitude
+	 * @param longtiude
 	 * @return
 	 */
-	boolean inRange(int x, int y) {
-		return (x >= this.getxMin() && x <= this.getxMax()
-				&& y >= this.getyMin() && y <= this.getyMax());
+	boolean inRange(double latitude, double longtiude) {
+		return (latitude >= this.getxMin() && latitude <= this.getxMax()
+				&& longtiude >= this.getyMin() && longtiude <= this.getyMax());
 	}
 
 	/**
 	 * @return the xMin
 	 */
-	int getxMin() {
+	double getxMin() {
 		return xMin;
 	}
 
 	/**
 	 * @return the yMin
 	 */
-	int getyMin() {
+	double getyMin() {
 		return yMin;
 	}
 
 	/**
 	 * @return the xMax
 	 */
-	int getxMax() {
+	double getxMax() {
 		return xMax;
 	}
 
 	/**
 	 * @return the yMax
 	 */
-	int getyMax() {
+	double getyMax() {
 		return yMax;
 	}
 	
