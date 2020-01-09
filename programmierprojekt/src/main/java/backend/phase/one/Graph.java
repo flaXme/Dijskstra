@@ -1,4 +1,4 @@
-package backend.phase.one.programmierprojekt;
+package backend.phase.one;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,7 +19,7 @@ public class Graph {
 	private int[] edgeArray;
 	private int[] nodeArray;
 
-	Graph(String path) {
+	public Graph(String path) {
 		System.out.println();
 		System.out.print("reading file ");
 		long startTime = System.currentTimeMillis();
@@ -97,7 +97,7 @@ public class Graph {
 		return nrOfOutgoingEdges[nodeID];
 	}
 
-	int getNodeNr() {
+	public int getNodeNr() {
 		return nodeNr;
 	}
 
@@ -105,11 +105,11 @@ public class Graph {
 		return edgeNr;
 	}
 
-	double getLatitude(int nodeID) {
+	public double getLatitude(int nodeID) {
 		return latitude[nodeID];
 	}
 
-	double getLongitude(int nodeID) {
+	public double getLongitude(int nodeID) {
 		return longitude[nodeID];
 	}
 

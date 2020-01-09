@@ -1,4 +1,4 @@
-package backend.phase.one.programmierprojekt;
+package backend.phase.one;
 
 
 public class Dijkstra {

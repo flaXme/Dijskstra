@@ -1,4 +1,4 @@
-package backend.phase.one.programmierprojekt;
+package backend.phase.one;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-import java.io.PrintWriter;
 import java.io.FileWriter;
 
 public class Main {
