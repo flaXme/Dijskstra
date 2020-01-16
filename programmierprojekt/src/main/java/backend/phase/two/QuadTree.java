@@ -86,6 +86,59 @@ public class QuadTree {
 				new Boundary(xOffset, this.boundary.getyMin(), this.boundary.getxMax(), yOffset));
 
 	}
+	/**
+	 * 
+	 * @param latitude
+	 * @param longtiude
+	 * @return -1 NO NEXT NODE
+	 */
+	int nextNeighbour(double latitude, double longtiude) {
+		if (!this.boundary.inRange(latitude, longtiude)) {
+			return -1;
+		}
+		int nextNeighbour = -2;
+		double dis = Double.MAX_VALUE;
+		for(int i = 0; i < this.size; i++) {
+			if(distance(this.latitude[i],this.longtiude[i],latitude,longtiude)<dis) {
+				dis = distance(this.latitude[i],this.longtiude[i],latitude,longtiude);
+				nextNeighbour = this.id[i];
+			}
+		}
+		if(northEast != null) {
+			
+			if (this.northWest.boundary.inRange(latitude, longtiude)) {
+				if(this.northWest.size != 0) {
+					nextNeighbour = this.northWest.nextNeighbour(latitude, longtiude);
+				}
+			}
+
+			else if (this.northEast.boundary.inRange(latitude, longtiude)) {
+				if(this.northEast.size != 0) {
+					nextNeighbour = this.northEast.nextNeighbour(latitude, longtiude);
+				}
+			}
+
+			else if (this.southWest.boundary.inRange(latitude, longtiude)) {
+				if(this.southWest.size != 0) {
+					nextNeighbour = this.southWest.nextNeighbour(latitude, longtiude);
+				}
+			}
+
+			else if (this.southEast.boundary.inRange(latitude, longtiude)) {
+				if(this.southEast.size != 0) {
+					nextNeighbour = this.southEast.nextNeighbour(latitude, longtiude);
+				}
+			}
+		}
+		return nextNeighbour;
+	}
+	double distance(double x1,double y1,double x2,double y2) {
+		double lat_diff_pow_2 = Math.pow(x1  - x2,  2);
+    	double lon_diff_pow_2 = Math.pow(y1 - y2, 2);
+    	double diff = Math.sqrt(lat_diff_pow_2 + lon_diff_pow_2);
+		return diff;
+	}
+	
 
 	public static void main(String[] args) {
 		/*
@@ -146,6 +199,18 @@ public class QuadTree {
 		System.out.println(numberOfinsertedNode);
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
+		double lat = latMin + Math.random() + Math.random();
+		double lon = longMin + Math.random() + Math.random();
+		System.out.println(lat);
+		System.out.println(lon);
+		int tree_next = tree.nextNeighbour(lat, lon );
+		System.out.println(graph.getLatitude(tree_next) +","+ graph.getLongitude(tree_next));
+		System.out.println(tree_next);
+		
+		Iterater tr = new Iterater(graph);
+		int it_next = tr.findNextNeighbor(lat, lon);
+		System.out.println(graph.getLatitude(it_next) +","+ graph.getLongitude(it_next));
+		System.out.println(it_next );
 	}
 
 }
