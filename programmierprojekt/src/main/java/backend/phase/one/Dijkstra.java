@@ -47,7 +47,7 @@ public class Dijkstra {
 		}
 		long eTime = System.currentTimeMillis();
 		long time = eTime - sTime;
-		System.out.println("Dijkstra Computation took "+time/1000+"s");
+		System.out.println("Dijkstra Computation took ["+time+"] milli seconds");
 		
 	}
 	

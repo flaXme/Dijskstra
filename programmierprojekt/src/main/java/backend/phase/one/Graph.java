@@ -21,13 +21,13 @@ public class Graph {
 
 	public Graph(String path) {
 		System.out.println();
-		System.out.print("reading file ");
+		System.out.print("Reading file ");
 		long startTime = System.currentTimeMillis();
 		readGraphFile(path);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println();
-		System.out.println("reading file took: " + totalTime / 1000 + "s");
+		System.out.println("Reading file took [" + totalTime +"] milliseconds");
 	}
 
 	private void readGraphFile(String path) {
