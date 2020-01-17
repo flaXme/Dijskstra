@@ -1,6 +1,6 @@
-package backend.phase.two;
+package backend.phase.two.programmierprojekt;
 
-import backend.phase.one.Graph;
+import backend.phase.one.programmierprojekt.Graph;
 
 /**
  * Quad Tree for efficient search for next Node
@@ -156,7 +156,7 @@ public class QuadTree {
 		 *  
 		 *  dauert 11 Minuten
 		 */
-		Graph graph = new Graph("/home/ad/Downloads/graph-files/germany.fmi");
+		Graph graph = new Graph("/home/ad/Downloads/graph-files/MV.fmi");
 
 		double latMin = graph.getLatitude(0);
 		double latMax = graph.getLatitude(0);

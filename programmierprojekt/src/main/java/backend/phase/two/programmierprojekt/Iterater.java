@@ -1,6 +1,6 @@
-package backend.phase.two;
+package backend.phase.two.programmierprojekt;
 
-import backend.phase.one.Graph;
+import backend.phase.one.programmierprojekt.Graph;
 
 /**
  * Find next neighbor with Iteration over all Nodes

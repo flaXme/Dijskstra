@@ -1,4 +1,4 @@
-package backend.phase.two;
+package backend.phase.two.programmierprojekt;
 
 public class Boundary {
 	private double xMin;

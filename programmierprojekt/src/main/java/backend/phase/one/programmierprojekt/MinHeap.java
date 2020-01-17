@@ -1,4 +1,4 @@
-package backend.phase.one;
+package backend.phase.one.programmierprojekt;
 
 public class MinHeap {
 	private int size;
