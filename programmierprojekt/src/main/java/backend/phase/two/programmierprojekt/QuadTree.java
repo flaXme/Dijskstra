@@ -1,5 +1,12 @@
 package backend.phase.two.programmierprojekt;
 
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Stack;
+
 import backend.phase.one.programmierprojekt.Graph;
 
 /**
@@ -22,13 +29,15 @@ public class QuadTree {
 	private QuadTree northWest = null;
 	private QuadTree southEast = null;
 	private QuadTree southWest = null;
+	private static double dis;
 
-	QuadTree(int level, Boundary boundary) {
+	QuadTree(int level, Boundary boundary,double dis) {
 		this.level = level;
 		this.boundary = boundary;
 		id = new int[MAX_CAPACITY];
 		latitude = new double[MAX_CAPACITY];
 		longtiude = new double[MAX_CAPACITY];
+		this.dis = dis;
 	}
 
 	void insert(int id, double latitude, double longtiude) {
@@ -77,13 +86,13 @@ public class QuadTree {
 		double yOffset = this.boundary.getyMin() + (this.boundary.getyMax() - this.boundary.getyMin()) / 2;
 
 		northWest = new QuadTree(this.level + 1,
-				new Boundary(this.boundary.getxMin(), yOffset, xOffset, this.boundary.getyMax()));
+				new Boundary(this.boundary.getxMin(), yOffset, xOffset, this.boundary.getyMax()),dis);
 		northEast = new QuadTree(this.level + 1,
-				new Boundary(xOffset, yOffset, this.boundary.getxMax(), this.boundary.getyMax()));
+				new Boundary(xOffset, yOffset, this.boundary.getxMax(), this.boundary.getyMax()),dis);
 		southWest = new QuadTree(this.level + 1,
-				new Boundary(this.boundary.getxMin(), this.boundary.getyMin(), xOffset, yOffset));
+				new Boundary(this.boundary.getxMin(), this.boundary.getyMin(), xOffset, yOffset),dis);
 		southEast = new QuadTree(this.level + 1,
-				new Boundary(xOffset, this.boundary.getyMin(), this.boundary.getxMax(), yOffset));
+				new Boundary(xOffset, this.boundary.getyMin(), this.boundary.getxMax(), yOffset),dis);
 
 	}
 	/**
@@ -132,12 +141,47 @@ public class QuadTree {
 		}
 		return nextNeighbour;
 	}
+	
+	int nextNeighbor(double x, double y) {
+		Stack<QuadTree> stack = new Stack<>();
+		int nearestNeighbor = -1;
+		for(int i = 0; i < this.size; i++) {
+			if(distance(this.latitude[i],this.longtiude[i],x,y)<dis) {
+				dis = distance(this.latitude[i],this.longtiude[i],x,y);
+				nearestNeighbor = this.id[i];
+			}
+		}
+		Circle c = new Circle(x,y,dis);
+		
+		if(this.northEast != null) {
+			stack.push(this.northEast);
+			stack.push(this.northWest);
+			stack.push(this.southEast);
+			stack.push(this.southWest);
+		}
+		while(!stack.empty()) {
+			QuadTree tr = stack.pop();
+			if(c.intersect(tr.boundary)) {
+				int nearestNeighbor1 = tr.nextNeighbor(x, y);
+				if(nearestNeighbor1 == -1) {
+					continue;
+				}
+				nearestNeighbor = nearestNeighbor1;
+				c.setRadius(dis);
+			}
+		}
+		return nearestNeighbor;
+	}
+	
 	double distance(double x1,double y1,double x2,double y2) {
 		double lat_diff_pow_2 = Math.pow(x1  - x2,  2);
     	double lon_diff_pow_2 = Math.pow(y1 - y2, 2);
     	double diff = Math.sqrt(lat_diff_pow_2 + lon_diff_pow_2);
 		return diff;
 	}
+	
+
+
 	
 
 	public static void main(String[] args) {
@@ -156,7 +200,7 @@ public class QuadTree {
 		 *  
 		 *  dauert 11 Minuten
 		 */
-		Graph graph = new Graph("/home/ad/Downloads/graph-files/MV.fmi");
+		Graph graph = new Graph("/Users/pangxin/Desktop/Dijkstra/MV.fmi.txt");
 
 		double latMin = graph.getLatitude(0);
 		double latMax = graph.getLatitude(0);
@@ -190,20 +234,20 @@ public class QuadTree {
 		System.out.println("longMin = " + longMin);
 		System.out.println("longMax = " + longMax);
 
-		QuadTree tree = new QuadTree(1, new Boundary(latMin, longMin, latMax, longMax));
+		QuadTree tree = new QuadTree(1, new Boundary(latMin, longMin, latMax, longMax),Double.MAX_VALUE);
 		long start = System.currentTimeMillis();
 		
 		for (int i = 0; i < graph.getNodeNr(); i++) {
 			tree.insert(i, graph.getLatitude(i), graph.getLongitude(i));
 		}
-		System.out.println(numberOfinsertedNode);
+		//System.out.println(numberOfinsertedNode);
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
 		double lat = latMin + Math.random() + Math.random();
 		double lon = longMin + Math.random() + Math.random();
 		System.out.println(lat);
 		System.out.println(lon);
-		int tree_next = tree.nextNeighbour(lat, lon );
+		int tree_next = tree.nextNeighbor(lat, lon);
 		System.out.println(graph.getLatitude(tree_next) +","+ graph.getLongitude(tree_next));
 		System.out.println(tree_next);
 		
