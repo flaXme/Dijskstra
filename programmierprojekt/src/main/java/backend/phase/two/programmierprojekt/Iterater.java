@@ -21,7 +21,7 @@ public class Iterater{
 	 * @param longitude
 	 * @return next neighbor Node ID
 	 */
-    int findNextNeighbor (double latitude, double longitude){
+    public int findNextNeighbor (double latitude, double longitude){
         int nextNeighbor = -1;
         double current_diff = Double.MAX_VALUE;
         for (int i = 0; i < graph.getNodeNr(); i++){
