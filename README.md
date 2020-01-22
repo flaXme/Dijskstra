@@ -15,3 +15,7 @@ Danach
 ```
 java -cp target/programmierprojekt-0.0.1-SNAPSHOT.jar backend.phase.one.programmierprojekt.Main
 ```
+
+## Graph-Datei
+Die Graph-Datei germany.fmi muss im Verzeichnis $HOME gespeichert sein, also /home/<benutzername>/germany.fmi.
+Dabei wird davon ausgegangen, dass der Code nicht von Root, sondern von einem regulären Benutzer ausgeführt wird.
