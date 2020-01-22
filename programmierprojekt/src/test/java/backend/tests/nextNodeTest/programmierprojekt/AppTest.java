@@ -2,10 +2,17 @@ package backend.tests.nextNodeTest.programmierprojekt;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Random;
 import java.util.Scanner;
+import java.security.MessageDigest;
+import java.io.FileInputStream;
 
 import org.junit.Test;
+import junit.runner.Version;
 
 import backend.phase.one.programmierprojekt.Graph;
 import backend.phase.two.programmierprojekt.Boundary;
@@ -27,10 +34,14 @@ public class AppTest {
 	 */
 	@Test
 	public void testNextNode() {
-		System.out.println("bitte path eingeben: ");
-		Scanner s = new Scanner(System.in);
-		String path = s.nextLine();
-		Graph graph = new Graph (path);
+		
+		String userHome = System.getProperty("user.home");
+		
+		System.out.println("The home variable has been recognized as " + userHome);
+		
+		System.out.println("Expected graph file name: germany.fmi");
+		
+		Graph graph = new Graph (userHome + "/germany.fmi");
 		
 		double latMin = graph.getLatitude(0);
 		double latMax = graph.getLatitude(0);
